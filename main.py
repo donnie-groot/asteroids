@@ -1,5 +1,5 @@
 ###### built in imports ######
-
+import sys
 ###### 3rd party imports ######
 import pygame
 
@@ -9,6 +9,7 @@ from logger import log_state
 from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
+from logger import log_event
 
 def main():
     pygame.init()
@@ -32,8 +33,6 @@ def main():
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
 
-    
-
     while True:
         log_state()
         for event in pygame.event.get():
@@ -42,6 +41,11 @@ def main():
         dt = clock.tick(60) / 1000
         
         updatable.update(dt)
+        for asteroid in asteroids:
+            if player.collides_with(asteroid):
+                log_event("player_hit")
+                print("Game over!")
+                sys.exit()
         
         screen.fill("black")
         
